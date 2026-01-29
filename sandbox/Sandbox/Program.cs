@@ -1,16 +1,14 @@
 using System;
+using System.Text.Json.Serialization.Metadata;
 // made by w00f
 class Program
 {
     static void Main(string[] args)
     {
-    string numm = Console.ReadLine;
-    
+        Console.WriteLine("test");
 
-    while (num> 0)
-        {
-            Console.WriteLine(num);
-            num = num - 1;
-        }
+        Counter myCounter = new Counter();
+        myCounter.run
     }
 }
+
