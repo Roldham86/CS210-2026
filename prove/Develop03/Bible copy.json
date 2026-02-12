@@ -1,0 +1,39 @@
+{
+    "book": "John",
+    "chapters": {
+        "1": {
+            "1": "In the beginning was the Word, and the Word was with God, and the Word was God.",
+            "2": "The same was in the beginning with God.",
+            "3": "All things were made by him; and without him was not any thing made that was made.",
+            "51": "And he saith unto him, Verily, verily, I say unto you, Hereafter ye shall see heaven open, and the angels of God ascending and descending upon the Son of man."
+        },
+
+        "2": {
+            "1": "And the third day there was a marriage in Cana of Galilee; and the mother of Jesus was there:",
+            "2": "And both Jesus was called, and his disciples, to the marriage.",
+            "3": "And when they wanted wine, the mother of Jesus saith unto him, They have no wine.",
+            "25": "And needed not that any should testify of man: for he knew what was in man."
+        },
+
+        "3": {
+            "1": "There was a man of the Pharisees, named Nicodemus, a ruler of the Jews:",
+            "2": "The same came to Jesus by night, and said unto him, Rabbi, we know that thou art a teacher come from God: for no man can do these miracles that thou doest, except God be with him.",
+            "3": "Jesus answered and said unto him, Verily, verily, I say unto thee, Except a man be born again, he cannot see the kingdom of God.",
+            "36": "He that believeth on the Son hath everlasting life: and he that believeth not the Son shall not see life; but the wrath of God abideth on him."
+        },
+
+        "4": {
+            "1": "When therefore the Lord knew how the Pharisees had heard that Jesus made and baptized more disciples than John,",
+            "2": "(Though Jesus himself baptized not, but his disciples,)",
+            "3": "He left Judaea, and departed again into Galilee.",
+            "54": "This is again the second miracle that Jesus did, when he was come out of Judaea into Galilee."
+        },
+        
+        "5": {
+            "1": "After this there was a feast of the Jews; and Jesus went up to Jerusalem.",
+            "2": "Now there is at Jerusalem by the sheep market a pool, which is called in the Hebrew tongue Bethesda, having five porches.",
+            "3": "In these lay a great multitude of impotent folk, of blind, halt, withered, waiting for the moving of the water.",
+            "47": "But if ye believe not his writings, how shall ye believe my words?"
+        }
+    } 
+}
