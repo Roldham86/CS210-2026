@@ -1,32 +1,37 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text;
+//Made by W00F
 public class Scripture
 {
-    private Reference _reference;
-    private List<Word> _words;
-    private Random _random = new Random();
+    private readonly Reference _reference;
+    private readonly List<Word> _words;
+    private static readonly Random _random = new Random();
 
-    public Scripture(Reference reference, string text)
+
+    public Scripture(Reference reference, List<Verse> verses)
     {
         _reference = reference;
         _words = new List<Word>();
 
-        string[] parts = text.Split(' ');
-
-        foreach (string part in parts)
+        // Add verses as:
+        // "1:" token (locked) + verse words + newline token (locked)
+        foreach (var verse in verses)
         {
-            _words.Add(new Word(part));
+            _words.Add(new Word($"{verse.Number}:"));
+
+            foreach (string w in verse.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries))
+                _words.Add(new Word(w));
+
+            _words.Add(new Word("\n"));
         }
     }
 
     public void HideRandomWords(int numberToHide)
     {
-        List<Word> visibleWords = _words.Where(w => !w.IsHidden).ToList();
-
-        if (visibleWords.Count == 0)
-            return;
+        var visibleWords = _words.Where(w => w.CanHide && !w.IsHidden).ToList();
+        if (visibleWords.Count == 0) return;
 
         numberToHide = Math.Min(numberToHide, visibleWords.Count);
 
@@ -38,14 +43,38 @@ public class Scripture
         }
     }
 
-    public bool AllWordsHidden()
+    public bool IsCompletelyHidden()
     {
-        return _words.All(w => w.IsHidden);
+        return _words.Where(w => w.CanHide).All(w => w.IsHidden);
     }
 
     public string GetDisplayText()
     {
-        string text = string.Join(" ", _words.Select(w => w.GetDisplayText()));
-        return $"{_reference}\n{text}";
+        var sb = new StringBuilder();
+        sb.Append(_reference.ToString());
+        sb.Append("\n\n");
+
+        foreach (var w in _words)
+        {
+            string token = w.GetDisplayText();
+
+            if (token == "\n")
+            {
+                if (sb.Length > 0 && sb[sb.Length - 1] == ' ')
+                    sb.Length--;
+
+                sb.Append('\n');
+            }
+            else
+            {
+                sb.Append(token);
+                sb.Append(' ');
+            }
+        }
+
+        while (sb.Length > 0 && (sb[sb.Length - 1] == ' ' || sb[sb.Length - 1] == '\n'))
+            sb.Length--;
+
+        return sb.ToString();
     }
 }

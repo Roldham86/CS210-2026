@@ -1,8 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
-
+//Made by W00F
 public class ScriptureLibrary
 {
     private readonly BibleBook _book;
@@ -11,17 +11,23 @@ public class ScriptureLibrary
     {
         string json = File.ReadAllText(jsonPath);
 
-        _book = JsonSerializer.Deserialize<BibleBook>(json)
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
+        _book = JsonSerializer.Deserialize<BibleBook>(json, options)
             ?? throw new Exception("Failed to load Bible JSON.");
     }
 
-    // Builds the full scripture text for either a single verse or a range
-    public string GetText(Reference reference)
+    public List<Verse> GetVerses(Reference reference)
     {
         string chapterKey = reference.Chapter.ToString();
 
         if (!_book.Chapters.TryGetValue(chapterKey, out var verses))
             throw new Exception($"Chapter {reference.Chapter} not found in {_book.Book}.");
+
+        var result = new List<Verse>();
 
         if (!reference.IsRange)
         {
@@ -29,21 +35,21 @@ public class ScriptureLibrary
             if (!verses.TryGetValue(verseKey, out var text))
                 throw new Exception($"Verse {reference.StartVerse} not found.");
 
-            return text;
+            result.Add(new Verse(reference.StartVerse, text));
+            return result;
         }
-        else
-        {
-            // Range: concatenate verses in order
-            var parts = Enumerable.Range(reference.StartVerse, reference.EndVerse - reference.StartVerse + 1)
-                .Select(v =>
-                {
-                    string key = v.ToString();
-                    if (!verses.TryGetValue(key, out var t))
-                        throw new Exception($"Verse {v} not found.");
-                    return t;
-                });
 
-            return string.Join(" ", parts);
+        for (int v = reference.StartVerse; v <= reference.EndVerse; v++)
+        {
+            string key = v.ToString();
+
+            if (!verses.TryGetValue(key, out var verseText))
+                throw new Exception($"Verse {v} not found.");
+
+            result.Add(new Verse(v, verseText));
         }
+
+        return result;
     }
 }
+

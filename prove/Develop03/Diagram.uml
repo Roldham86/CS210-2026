@@ -1,0 +1,79 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Program {
+  {static} Main(): void
+}
+
+class ReferenceParser {
+  {static} Parse(input: string): Reference
+}
+
+class Reference {
+  -_book: string
+  -_chapter: int
+  -_startVerse: int
+  -_endVerse: int?
+  +Reference(book: string, chapter: int, verse: int)
+  +Reference(book: string, chapter: int, startVerse: int, endVerse: int)
+  +Book: string {readOnly}
+  +Chapter: int {readOnly}
+  +StartVerse: int {readOnly}
+  +EndVerse: int {readOnly}
+  +IsRange: bool {readOnly}
+  +ToString(): string
+}
+
+class ScriptureLibrary {
+  -_book: BibleBook
+  +ScriptureLibrary(jsonPath: string)
+  +GetVerses(reference: Reference): List<Verse>
+}
+
+class BibleBook {
+  +Book: string
+  +Chapters: Dictionary<string, Dictionary<string, string>>
+}
+
+class Verse {
+  +Number: int {readOnly}
+  +Text: string {readOnly}
+  +Verse(number: int, text: string)
+}
+
+class Scripture {
+  -_reference: Reference
+  -_words: List<Word>
+  -_random: Random
+  +Scripture(reference: Reference, verses: List<Verse>)
+  +HideRandomWords(numberToHide: int): void
+  +IsCompletelyHidden(): bool
+  +GetDisplayText(): string
+}
+
+class Word {
+  -_text: string
+  -_isHidden: bool
+  +Word(text: string)
+  +IsHidden: bool {readOnly}
+  +CanHide: bool {readOnly}
+  +Hide(): void
+  +GetDisplayText(): string
+}
+
+' --- Relationships / Dependencies ---
+Program ..> ReferenceParser : calls
+Program ..> Reference : uses
+Program ..> ScriptureLibrary : creates/uses
+Program ..> Scripture : creates/uses
+
+ReferenceParser ..> Reference : creates
+
+ScriptureLibrary *-- BibleBook : owns
+ScriptureLibrary ..> Verse : creates
+
+Scripture *-- Reference : owns
+Scripture *-- "0..*" Word : contains
+Scripture ..> Verse : consumes
+
+@enduml
