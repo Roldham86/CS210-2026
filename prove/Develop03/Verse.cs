@@ -1,4 +1,6 @@
-//Made by W00F
+// Made by W00F
+// Represents one verse: its number and its text.
+// ScriptureLibrary returns a list of these for single verses or ranges.
 public class Verse
 {
     public int Number { get; }
