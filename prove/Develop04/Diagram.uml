@@ -1,0 +1,54 @@
+@startuml
+title Mindfulness Program - Class Diagram
+
+class Program {
+  +Main(args: string[]): void
+  -ShowMenu(): void
+  -RunChoice(choice: int): void
+}
+
+abstract class Activity {
+  -_name: string
+  -_description: string
+  -_durationSeconds: int
+
+  #Activity(name: string, description: string)
+  +Start(): void
+  +End(): void
+  +Run(): void
+  #GetDuration(): int
+  #ShowSpinner(seconds: int): void
+  #ShowCountdown(seconds: int): void
+}
+
+class BreathingActivity {
+  +BreathingActivity()
+  +Run(): void
+}
+
+class ReflectionActivity {
+  -_prompts: List<string>
+  -_questions: List<string>
+  -_rand: Random
+
+  +ReflectionActivity()
+  +Run(): void
+  -GetRandomPrompt(): string
+  -GetRandomQuestion(): string
+}
+
+class ListingActivity {
+  -_prompts: List<string>
+  -_rand: Random
+
+  +ListingActivity()
+  +Run(): void
+  -GetRandomPrompt(): string
+}
+
+Program ..> Activity : creates/uses
+Activity <|-- BreathingActivity
+Activity <|-- ReflectionActivity
+Activity <|-- ListingActivity
+
+@enduml
