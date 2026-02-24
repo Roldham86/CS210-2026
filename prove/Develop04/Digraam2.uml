@@ -1,0 +1,92 @@
+@startuml
+title Mindfulness Program - Integrated Extension Design
+
+class Program {
+  +Main(args: string[]): void
+  -ShowMenu(stats: ActivityStats): void
+  -RunChoice(choice: int): void
+}
+
+abstract class Activity {
+  -_name: string
+  -_description: string
+  -_durationSeconds: int
+  -_logger: ActivityLogger
+
+  #Activity(name: string, description: string, logger: ActivityLogger)
+  +Start(): void
+  +End(): void
+  +Run(): void
+  #GetDuration(): int
+  #GetName(): string
+  #ShowSpinner(seconds: int): void
+  #ShowCountdown(seconds: int): void
+  #LogSession(itemCount: int?): void
+}
+
+class BreathingActivity {
+  +BreathingActivity(logger: ActivityLogger)
+  +Run(): void
+}
+
+class ReflectionActivity {
+  -_promptBag: PromptBag
+  -_questionBag: PromptBag
+  +ReflectionActivity(logger: ActivityLogger, promptBag: PromptBag, questionBag: PromptBag)
+  +Run(): void
+}
+
+class ListingActivity {
+  -_promptBag: PromptBag
+  +ListingActivity(logger: ActivityLogger, promptBag: PromptBag)
+  +Run(): void
+}
+
+class GratitudeActivity {
+  +GratitudeActivity(logger: ActivityLogger)
+  +Run(): void
+}
+
+class PromptBag {
+  -_items: List<string>
+  -_bag: Queue<string>
+  -_rand: Random
+  +PromptBag(items: List<string>)
+  +Next(): string
+  -RefillAndShuffle(): void
+}
+
+class ActivityLogger {
+  -_path: string
+  +ActivityLogger(path: string)
+  +Append(entry: ActivityLogEntry): void
+  +ReadAll(): List<ActivityLogEntry>
+  +GetStats(): ActivityStats
+}
+
+class ActivityLogEntry {
+  +Timestamp: DateTime
+  +ActivityName: string
+  +DurationSeconds: int
+  +ItemCount: int?
+}
+
+class ActivityStats {
+  +TotalSessions: int
+  +SessionsByActivity: Dictionary<string,int>
+  +TotalSeconds: int
+}
+
+Program ..> Activity : creates/uses
+Activity <|-- BreathingActivity
+Activity <|-- ReflectionActivity
+Activity <|-- ListingActivity
+Activity <|-- GratitudeActivity
+
+ReflectionActivity --> PromptBag
+ListingActivity --> PromptBag
+Activity --> ActivityLogger
+ActivityLogger --> ActivityLogEntry
+ActivityLogger --> ActivityStats
+
+@enduml
