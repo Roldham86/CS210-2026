@@ -1,4 +1,5 @@
 @startuml
+skinparam classAttributeIconSize 0
 title Mindfulness Program - Class Diagram
 
 class Program {
@@ -8,9 +9,9 @@ class Program {
 }
 
 abstract class Activity {
-  -_name: string
-  -_description: string
-  -_durationSeconds: int
+  #_name: string
+  #_description: string
+  #_durationSeconds: int
 
   #Activity(name: string, description: string)
   +Start(): void

@@ -58,8 +58,8 @@ class Program
 
         for (int i = 1; i <= 20; i++)
         {
-            int top = rand.Next(-10, 11);     // -10..10
-            int bottom = rand.Next(-10, 11);  // -10..10 (could be 0)
+            int top = rand.Next(-10, 11);
+            int bottom = rand.Next(-10, 11);  
 
             practice.SetTop(top);
             practice.SetBottom(bottom);
