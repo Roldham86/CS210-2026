@@ -1,19 +1,16 @@
 using System;
+using System.Collections.Concurrent;
 
 public class Program
 {
-    public static void Main()
+    public static void Main(string[] args)
     {
-        CircuitBoard myCircuit = new CircuitBoard();
+        Book b2 = new Book("BoxcChild", 101);
+        Book b1 = new Book("charweb", 101, true);
         
-        // Setup the components
-        myCircuit.PowerSource.Voltage = 12.0;      // 12V Battery
-        myCircuit.Resistor.Resistance = 100.0;    // 100 Ohm Resistor
-        myCircuit.Bulb.RequiredCurrent = 0.15;    // Bulb needs 0.15 Amps to shine
 
-        // Perform the check
-        myCircuit.CalculateSafety();
-    // calculate reisitance 
+        Console.WriteLine(b2.getSummery());
+        Console.WriteLine(b1.getSummery());
     }
 
     
