@@ -3,18 +3,20 @@ using System.Threading;
 
 public abstract class Activity
 {
+// Shared private fields for all activities.
     private string _name;
     private string _description;
     private int _durationSeconds;
     private ActivityLogger _logger;
 
+// Base constructor used by all derived activity classes.
     protected Activity(string name, string description, ActivityLogger logger)
     {
         _name = name;
         _description = description;
         _logger = logger;
     }
-
+// Common starting message shown for every activity.
     public void Start()
     {
         Console.Clear();
@@ -29,7 +31,7 @@ public abstract class Activity
         ShowSpinner(3);
         Console.Clear();
     }
-
+// Common ending message shown for every activity.
     public void End()
     {
         Console.WriteLine();
@@ -39,17 +41,17 @@ public abstract class Activity
         Console.WriteLine($"You have completed another {_durationSeconds} seconds of the {_name} Activity.");
         ShowSpinner(3);
     }
-
+// Protected getter so child classes can use the chosen duration.
     protected int GetDuration()
     {
         return _durationSeconds;
     }
-
+// Protected getter so child classes can access the name if needed.
     protected string GetName()
     {
         return _name;
     }
-
+// Saves the completed session to the log file.
     protected void LogSession(int? itemCount = null)
     {
         ActivityLogEntry entry = new ActivityLogEntry(
@@ -58,10 +60,9 @@ public abstract class Activity
             _durationSeconds,
             itemCount
         );
-
         _logger.Append(entry);
     }
-
+// Spinner animation for pauses.
     protected void ShowSpinner(int seconds)
     {
         string[] spinner = { "|", "/", "-", "\\" };
@@ -76,7 +77,7 @@ public abstract class Activity
             i = (i + 1) % spinner.Length;
         }
     }
-
+// Countdown animation for pauses.
     protected void ShowCountdown(int seconds)
     {
         for (int i = seconds; i > 0; i--)
@@ -94,7 +95,7 @@ public abstract class Activity
             }
         }
     }
-
+// Read a valid positive integer from the user
     private int ReadPositiveInt(string prompt)
     {
         int value;
