@@ -10,8 +10,9 @@ class Program
         // 3. Added menu statistics from the log
         // 4. Added PromptBag so prompts/questions do not repeat until all have been used
 
+    // Logger handles saving and loading activity history from a text file.
         ActivityLogger logger = new ActivityLogger("log.txt");
-
+    // Prompt bags prevent repeats until every item has been used once.
         PromptBag reflectionPrompts = new PromptBag(new string[]
         {
             "Think of a time when you stood up for someone else.",
@@ -19,7 +20,6 @@ class Program
             "Think of a time when you helped someone in need.",
             "Think of a time when you did something truly selfless."
         });
-
         PromptBag reflectionQuestions = new PromptBag(new string[]
         {
             "Why was this experience meaningful to you?",
@@ -32,7 +32,6 @@ class Program
             "What did you learn about yourself through this experience?",
             "How can you keep this experience in mind in the future?"
         });
-
         PromptBag listingPrompts = new PromptBag(new string[]
         {
             "Who are people that you appreciate?",
@@ -43,9 +42,9 @@ class Program
         });
 
         bool running = true;
-
         while (running)
         {
+        // Load stats from the log file each time the menu appears.
             ActivityStats stats = logger.GetStats();
 
             Console.Clear();
@@ -68,7 +67,7 @@ class Program
 
             Console.Write("Select a choice from the menu: ");
             string choice = Console.ReadLine();
-
+        // Nullable because there may be no activity for invalid input
             Activity activity = null;
 
             switch (choice)
@@ -93,7 +92,7 @@ class Program
                     Console.ReadLine();
                     break;
             }
-
+        // Run the chosen activity if one was created.
             if (activity != null)
             {
                 activity.Run();

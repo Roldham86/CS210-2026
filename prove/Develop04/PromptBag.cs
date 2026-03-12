@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 public class PromptBag
 {
+// Original full set of prompts/questions.
     private List<string> _items;
+// Queue for the current shuffled round.
     private Queue<string> _bag;
     private Random _random;
 
@@ -14,7 +16,7 @@ public class PromptBag
         _random = new Random(Guid.NewGuid().GetHashCode());
         RefillAndShuffle();
     }
-
+// Returns the next item. If empty, reshuffle the full list first.
     public string Next()
     {
         if (_bag.Count == 0)
@@ -24,11 +26,11 @@ public class PromptBag
 
         return _bag.Dequeue();
     }
-
+// Refill the queue with a shuffled copy of the original list.
     private void RefillAndShuffle()
     {
         List<string> temp = new List<string>(_items);
-
+    // Fancy shuffle 
         for (int i = temp.Count - 1; i > 0; i--)
         {
             int j = _random.Next(i + 1);

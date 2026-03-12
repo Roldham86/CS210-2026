@@ -2,6 +2,7 @@ using System;
 
 public class ActivityLogEntry
 {
+// Read-only properties for a single completed activity session.
     public DateTime Timestamp { get; }
     public string ActivityName { get; }
     public int DurationSeconds { get; }
@@ -14,13 +15,13 @@ public class ActivityLogEntry
         DurationSeconds = durationSeconds;
         ItemCount = itemCount;
     }
-
+// Convert entry to a single line for the log file.
     public override string ToString()
     {
         string itemText = ItemCount.HasValue ? ItemCount.Value.ToString() : "";
         return $"{Timestamp:O}|{ActivityName}|{DurationSeconds}|{itemText}";
     }
-
+// Rebuild an ActivityLogEntry from a line in the log file.
     public static bool TryParse(string line, out ActivityLogEntry entry)
     {
         entry = null;
