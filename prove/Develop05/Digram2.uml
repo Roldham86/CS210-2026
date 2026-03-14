@@ -41,9 +41,9 @@ class EternalGoal {
 }
 
 class ChecklistGoal {
-  - _amountCompleted : int
-  - _targetAmount : int
-  - _bonus : int
+  # _amountCompleted : int
+  # _targetAmount : int
+  # _bonus : int
   + ChecklistGoal(name : string, description : string, points : int, targetAmount : int, bonus : int, amountCompleted : int = 0)
   + override RecordEvent() : int
   + override IsComplete() : bool

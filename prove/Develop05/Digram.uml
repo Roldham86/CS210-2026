@@ -2,9 +2,9 @@
 skinparam classAttributeIconSize 0
 
 abstract class Goal {
-  - string _name
-  - string _description
-  - int _points
+  # string _name
+  # string _description
+  # int _points
   + Goal(name, description, points)
   + string GetName()
   + string GetDescription()
