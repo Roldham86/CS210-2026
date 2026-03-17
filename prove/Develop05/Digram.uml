@@ -1,0 +1,73 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+abstract class Goal {
+  # string _name
+  # string _description
+  # int _points
+  + Goal(name, description, points)
+  + string GetName()
+  + string GetDescription()
+  + int GetPoints()
+  + abstract int RecordEvent()
+  + abstract bool IsComplete()
+  + abstract string GetStatusText()
+  + abstract string GetDetailsString()
+  + abstract string GetSaveString()
+}
+
+class SimpleGoal {
+  - bool _isComplete
+  + SimpleGoal(name, description, points)
+  + override int RecordEvent()
+  + override bool IsComplete()
+  + override string GetStatusText()
+  + override string GetDetailsString()
+  + override string GetSaveString()
+}
+
+class EternalGoal {
+  + EternalGoal(name, description, points)
+  + override int RecordEvent()
+  + override bool IsComplete()
+  + override string GetStatusText()
+  + override string GetDetailsString()
+  + override string GetSaveString()
+}
+
+class ChecklistGoal {
+  - int _amountCompleted
+  - int _targetAmount
+  - int _bonus
+  + ChecklistGoal(name, description, points, targetAmount, bonus)
+  + override int RecordEvent()
+  + override bool IsComplete()
+  + override string GetStatusText()
+  + override string GetDetailsString()
+  + override string GetSaveString()
+}
+
+class GoalManager {
+  - List<Goal> _goals
+  - int _score
+  + GoalManager()
+  + void AddGoal(goal)
+  + void DisplayPlayerInfo()
+  + void ListGoalDetails()
+  + void RecordEvent(index)
+  + void SaveGoals(filename)
+  + void LoadGoals(filename)
+  + Goal CreateGoalFromString(line)
+}
+
+class Program {
+  + static void Main()
+}
+
+Goal <|-- SimpleGoal
+Goal <|-- EternalGoal
+Goal <|-- ChecklistGoal
+GoalManager "1" o-- "*" Goal
+Program --> GoalManager
+
+@enduml
