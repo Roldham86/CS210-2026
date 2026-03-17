@@ -1,0 +1,35 @@
+{
+  "Score": 1000,
+  "Goals": [
+    {
+      "Type": "SimpleGoal",
+      "Name": "grgs",
+      "Description": "rgserg",
+      "Points": 50,
+      "IsComplete": true,
+      "AmountCompleted": 0,
+      "TargetAmount": 0,
+      "Bonus": 0
+    },
+    {
+      "Type": "EternalGoal",
+      "Name": "grv",
+      "Description": "rtnnt",
+      "Points": 100,
+      "IsComplete": false,
+      "AmountCompleted": 0,
+      "TargetAmount": 0,
+      "Bonus": 0
+    },
+    {
+      "Type": "SimpleGoal",
+      "Name": "slap parker ",
+      "Description": "wappp",
+      "Points": 850,
+      "IsComplete": true,
+      "AmountCompleted": 0,
+      "TargetAmount": 0,
+      "Bonus": 0
+    }
+  ]
+}
