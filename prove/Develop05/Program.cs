@@ -1,13 +1,17 @@
 using System;
-
-class Program
+using System.Collections.Generic;
+// Made by W00F
+// Exceeding requirements:
+// Added a level system based on total score.
+// Every 1000 points increases the player's level,
+// adding a gamification element to encourage progress.
+public class Program
 {
     static void Main(string[] args)
     {
         GoalManager manager = new GoalManager();
-
         int choice = 0;
-
+    // Main menu loop.
         while (choice != 6)
         {
             manager.DisplayPlayerInfo();
@@ -21,8 +25,10 @@ class Program
             Console.WriteLine("6. Quit");
             Console.Write("Select a choice from the menu: ");
 
-            string input = Console.ReadLine() ?? "";
-            int.TryParse(input, out choice);
+            while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 6)
+            {
+                Console.Write("Enter a valid menu choice (1-6): ");
+            }
 
             switch (choice)
             {
@@ -55,14 +61,11 @@ class Program
                 case 6:
                     Console.WriteLine("Goodbye!");
                     break;
-
-                default:
-                    Console.WriteLine("Invalid choice. Please try again.");
-                    break;
             }
         }
     }
 
+// Handles creating a new goal based on the user's selected goal type.
     static void CreateGoalMenu(GoalManager manager)
     {
         Console.WriteLine("\nThe types of Goals are:");
@@ -70,10 +73,12 @@ class Program
         Console.WriteLine("2. Eternal Goal");
         Console.WriteLine("3. Checklist Goal");
         Console.Write("Which type of goal would you like to create? ");
-
-        string input = Console.ReadLine() ?? "";
+    // safely retrieve data from user 
         int goalType;
-        int.TryParse(input, out goalType);
+        while (!int.TryParse(Console.ReadLine(), out goalType) || goalType < 1 || goalType > 3)
+        {
+            Console.Write("Enter a valid goal type (1-3): ");
+        }
 
         Console.Write("What is the name of your goal? ");
         string name = Console.ReadLine() ?? "";
@@ -82,7 +87,11 @@ class Program
         string description = Console.ReadLine() ?? "";
 
         Console.Write("What is the amount of points associated with this goal? ");
-        int points = int.Parse(Console.ReadLine() ?? "0");
+        int points;
+        while (!int.TryParse(Console.ReadLine(), out points) || points < 0)
+        {
+            Console.Write("Enter a valid non-negative number: ");
+        }
 
         switch (goalType)
         {
@@ -96,46 +105,53 @@ class Program
 
             case 3:
                 Console.Write("How many times does this goal need to be accomplished for a bonus? ");
-                int targetAmount = int.Parse(Console.ReadLine() ?? "0");
+                int targetAmount;
+                while (!int.TryParse(Console.ReadLine(), out targetAmount) || targetAmount <= 0)
+                {
+                    Console.Write("Enter a valid number greater than 0: ");
+                }
 
                 Console.Write("What is the bonus for accomplishing it that many times? ");
-                int bonus = int.Parse(Console.ReadLine() ?? "0");
+                int bonus;
+                while (!int.TryParse(Console.ReadLine(), out bonus) || bonus < 0)
+                {
+                    Console.Write("Enter a valid non-negative number: ");
+                }
 
                 manager.AddGoal(new ChecklistGoal(name, description, points, targetAmount, bonus));
-                break;
-
-            default:
-                Console.WriteLine("Invalid goal type.");
                 break;
         }
     }
 
+// Lets the user choose which goal to record progress on.
     static void RecordEventMenu(GoalManager manager)
     {
-        if (manager.GetGoals().Count == 0)
+        List<Goal> goals = manager.GetGoals();
+
+        if (goals.Count == 0)
         {
             Console.WriteLine("\nNo goals available to record.");
             return;
         }
 
         Console.WriteLine("\nThe goals are:");
-        for (int i = 0; i < manager.GetGoals().Count; i++)
+        for (int i = 0; i < goals.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. {manager.GetGoals()[i].GetDetailsString()}");
+            Console.WriteLine($"{i + 1}. {goals[i].GetDetailsString()}");
         }
 
         Console.Write("Which goal did you accomplish? ");
-        int goalNumber = int.Parse(Console.ReadLine() ?? "0");
+        int goalNumber;
+        while (!int.TryParse(Console.ReadLine(), out goalNumber) || goalNumber < 1 || goalNumber > goals.Count)
+        {
+            Console.Write($"Enter a valid goal number (1-{goals.Count}): ");
+        }
 
         int pointsEarned = manager.RecordEvent(goalNumber - 1);
 
-        if (pointsEarned == -1)
+        if (pointsEarned == 0)
         {
-            Console.WriteLine("Invalid goal selection.");
-        }
-        else if (pointsEarned == 0)
-        {
-            Console.WriteLine("That goal is already complete or no points were awarded.");
+            Console.WriteLine("That goal is already complete.");
         }
         else
         {

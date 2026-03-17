@@ -1,3 +1,6 @@
+// Made by W00F
+// This class is a simple data container used for JSON saving/loading.
+// It stores enough information to rebuild any goal type.
 public class GoalData
 {
     public string Type { get; set; } = "";
