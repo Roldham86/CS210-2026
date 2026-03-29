@@ -1,0 +1,144 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Program {
+  + Main(args : string[]) : void
+}
+
+class Menu {
+  - _circuit : Circuit
+  - _analyzer : CircuitAnalyzer
+  + Menu(circuit : Circuit, analyzer : CircuitAnalyzer)
+  + Run() : void
+  - AddVoltageSource() : void
+  - AddResistor() : void
+  - AddCapacitor() : void
+  - AddInductor() : void
+  - ReduceCircuit() : void
+  - AnalyzeCircuit() : void
+  - ReadDouble(prompt : string) : double
+  - ReadNet(prompt : string) : string
+}
+
+class Circuit {
+  - _components : List<CircuitComponent>
+  - _nextComponentId : int
+  + Circuit()
+  + AddComponent(component : CircuitComponent) : void
+  + GetNextComponentId() : int
+  + GetComponents() : List<CircuitComponent>
+  + ReplaceComponents(newComponents : List<CircuitComponent>) : void
+  + DisplayCircuit() : void
+  + BuildNetMap() : Dictionary<string, List<CircuitComponent>>
+  + CountVoltageSources() : int
+}
+
+abstract class CircuitComponent {
+  # _componentId : int
+  # _name : string
+  # _net1 : string
+  # _net2 : string
+  + CircuitComponent(componentId : int, name : string, net1 : string, net2 : string)
+  + GetComponentId() : int
+  + GetName() : string
+  + GetNet1() : string
+  + GetNet2() : string
+  + IsConnectedToNet(net : string) : bool
+  + SharesSameNets(other : CircuitComponent) : bool
+  + CanCombineWith(other : CircuitComponent) : bool
+  + CombineSeries(other : CircuitComponent, newComponentId : int, outerNet1 : string, outerNet2 : string) : CircuitComponent
+  + CombineParallel(other : CircuitComponent, newComponentId : int) : CircuitComponent
+  + GetComponentType() : string
+  + GetValueString() : string
+  + DisplayInfo() : void
+}
+
+class Resistor {
+  - _resistance : double
+  + Resistor(componentId : int, resistance : double, net1 : string, net2 : string)
+  + GetResistance() : double
+  + override CanCombineWith(other : CircuitComponent) : bool
+  + override CombineSeries(other : CircuitComponent, newComponentId : int, outerNet1 : string, outerNet2 : string) : CircuitComponent
+  + override CombineParallel(other : CircuitComponent, newComponentId : int) : CircuitComponent
+  + override GetComponentType() : string
+  + override GetValueString() : string
+  + override DisplayInfo() : void
+}
+
+class Capacitor {
+  - _capacitance : double
+  + Capacitor(componentId : int, capacitance : double, net1 : string, net2 : string)
+  + GetCapacitance() : double
+  + override CanCombineWith(other : CircuitComponent) : bool
+  + override CombineSeries(other : CircuitComponent, newComponentId : int, outerNet1 : string, outerNet2 : string) : CircuitComponent
+  + override CombineParallel(other : CircuitComponent, newComponentId : int) : CircuitComponent
+  + override GetComponentType() : string
+  + override GetValueString() : string
+  + override DisplayInfo() : void
+}
+
+class Inductor {
+  - _inductance : double
+  + Inductor(componentId : int, inductance : double, net1 : string, net2 : string)
+  + GetInductance() : double
+  + override CanCombineWith(other : CircuitComponent) : bool
+  + override CombineSeries(other : CircuitComponent, newComponentId : int, outerNet1 : string, outerNet2 : string) : CircuitComponent
+  + override CombineParallel(other : CircuitComponent, newComponentId : int) : CircuitComponent
+  + override GetComponentType() : string
+  + override GetValueString() : string
+  + override DisplayInfo() : void
+}
+
+class DCVoltageSource {
+  - _voltage : double
+  + DCVoltageSource(componentId : int, voltage : double, net1 : string, net2 : string)
+  + GetVoltage() : double
+  + override CanCombineWith(other : CircuitComponent) : bool
+  + override CombineSeries(other : CircuitComponent, newComponentId : int, outerNet1 : string, outerNet2 : string) : CircuitComponent
+  + override CombineParallel(other : CircuitComponent, newComponentId : int) : CircuitComponent
+  + override GetComponentType() : string
+  + override GetValueString() : string
+  + override DisplayInfo() : void
+}
+
+class CircuitAnalyzer {
+  + ReduceCircuit(circuit : Circuit) : AnalysisResult
+  + AnalyzeSimpleLoop(circuit : Circuit) : AnalysisResult
+  - TryReduceParallel(components : List<CircuitComponent>, circuit : Circuit) : bool
+  - TryReduceSeries(components : List<CircuitComponent>, circuit : Circuit) : bool
+  - BuildNetMap(components : List<CircuitComponent>) : Dictionary<string, List<CircuitComponent>>
+}
+
+class AnalysisResult {
+  - _isSuccessful : bool
+  - _message : string
+  - _equivalentResistance : double
+  - _equivalentCapacitance : double
+  - _equivalentInductance : double
+  - _totalVoltage : double
+  - _totalCurrent : double
+  + AnalysisResult(isSuccessful : bool, message : string)
+  + SetResistance(value : double) : void
+  + SetCapacitance(value : double) : void
+  + SetInductance(value : double) : void
+  + SetVoltage(value : double) : void
+  + SetCurrent(value : double) : void
+  + Display() : void
+}
+
+Program --> Circuit
+Program --> CircuitAnalyzer
+Program --> Menu
+
+Menu --> Circuit
+Menu --> CircuitAnalyzer
+CircuitAnalyzer --> AnalysisResult
+CircuitAnalyzer --> Circuit
+
+Circuit "1" o-- "*" CircuitComponent
+
+CircuitComponent <|-- Resistor
+CircuitComponent <|-- Capacitor
+CircuitComponent <|-- Inductor
+CircuitComponent <|-- DCVoltageSource
+@enduml

@@ -1,5 +1,4 @@
 using System;
-
 public abstract class CircuitComponent
 {
     protected int _componentId;
