@@ -11,21 +11,21 @@ public abstract class Goal
         _description = description;
         _points = points;
     }
-// Accessor for the goal name.
-    public string GetName()
-    {
-        return _name;
-    }
-// Accessor for the goal description.
-    public string GetDescription()
-    {
-        return _description;
-    }
-// Accessor for the point value of the goal.
-    public int GetPoints()
-    {
-        return _points;
-    }
+// // Accessor for the goal name.
+//     public string GetName()
+//     {
+//         return _name;
+//     }
+// // Accessor for the goal description.
+//     public string GetDescription()
+//     {
+//         return _description;
+//     }
+// // Accessor for the point value of the goal.
+//     public int GetPoints()
+//     {
+//         return _points;
+//     }
 // Records an event for the goal and returns the number of points earned.
     public abstract int RecordEvent();
 // Returns whether or not this goal is complete.
