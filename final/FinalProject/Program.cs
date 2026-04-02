@@ -4,6 +4,10 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello FinalProject World!");
+        Circuit circuit = new Circuit();
+        CircuitAnalyzer analyzer = new CircuitAnalyzer();
+        Menu menu = new Menu(circuit, analyzer);
+        menu.Run();
     }
 }
+
